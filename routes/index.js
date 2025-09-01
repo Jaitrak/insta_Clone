@@ -22,11 +22,11 @@ router.get("/login", function (req, res) {
 router.get("/like/:postid", async function (req, res) {
   const post = await postModel.findOne({ _id: req.params.postid });
   const user = await userModel.findOne({ username: req.session.passport.user });
-  if (post.like.indexOf(user._id) === -1) {
+  // if (post.like.indexOf(user._id) === -1) {
     post.like.push(user._id);
-  } else {
-    post.like.splice(post.like.indexOf(user._id), 1);
-  }
+  // } else {
+    // post.like.splice(post.like.indexOf(user._id), 1);
+  // }
   await post.save();
   res.json(post);
 });
@@ -247,4 +247,15 @@ function isLoggedIn(req, res, next) { //for make protected rout
   }
 }
 
+router.get("/like/:postid", async function (req, res) {
+  const post = await postModel.findOne({ _id: req.params.postid });
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  if (post.like.indexOf(user._id) === -1) {
+    post.like.push(user._id);
+  } else {
+    post.like.splice(post.like.indexOf(user._id), 1);
+  }
+  await post.save();
+  res.json(post);
+});
 module.exports = router;
